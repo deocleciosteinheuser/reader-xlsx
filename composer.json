@@ -7,5 +7,10 @@
             "email": "deoclecio.steinehuser@email.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "ReaderXlsx\\": "src/"
+        }
+    }
 }

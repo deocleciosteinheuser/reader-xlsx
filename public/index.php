@@ -1,6 +1,5 @@
 <?php
-require_once __DIR__ . '/../src/XlsxReaderBasic.php';
-require_once __DIR__ . '/../src/XlsxToJson.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 use ReaderXlsx\XlsxReaderBasic;
 use ReaderXlsx\XlsxToJson;
 
