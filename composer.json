@@ -1,0 +1,11 @@
+{
+    "name": "deo/reader-xlsx",
+    "description": "Projeto para leitura de aruquivo xlsx",
+    "authors": [
+        {
+            "name": "Deoclecio Steinheuser",
+            "email": "deoclecio.steinehuser@email.com"
+        }
+    ],
+    "require": {}
+}
