@@ -7,6 +7,7 @@ class XlsxReaderBasic
 {
     private $filePath;
     private $headers = [];
+    private $headerRow = 0;
     private $doc = null;
 
     public function __construct(string $filePath)
@@ -23,11 +24,11 @@ class XlsxReaderBasic
         return $this->headers;
     }
 
-    public function getRows(): Generator {
+    public function getRows($bAfterHeader = true): Generator
+    {
         $this->loadHeaders();
         $rows = $this->doc->getElementsByTagName('row');
-
-        for ($i = 0; $i < $rows->length; $i++) {
+        for ($i = ($bAfterHeader ? $this->headerRow : 0); $i < $rows->length; $i++) {
             yield $this->parseRow($rows->item($i));
         }
     }
@@ -70,7 +71,13 @@ class XlsxReaderBasic
     {
         $rows = $this->doc->getElementsByTagName('row');
         if ($rows->length > 0) {
-            return $this->parseRow($rows->item(0), $this->sharedStrings);
+            for ($i = 0; $i < $rows->length; $i++) {
+                if (count(array_filter($this->parseRow($rows->item($i) ))) > 2) {
+                    $this->headerRow = $i;
+                    return $this->parseRow($rows->item($i));
+                }
+            }
+            //return $this->parseRow($rows->item(0));
         }
         return [];
     }
@@ -84,8 +91,8 @@ class XlsxReaderBasic
             $style = $cell->getAttribute('s');
             foreach ($cell->getElementsByTagName('v') as $v) {
                 $rawValue = $v->nodeValue;
-                if ($type === 's' && isset($this->sharedStrings[(int)$rawValue])) {
-                    $value = $this->sharedStrings[(int)$rawValue];
+                if ($type === 's' && isset($this->sharedStrings[(int) $rawValue])) {
+                    $value = $this->sharedStrings[(int) $rawValue];
                 } elseif ($type === 'd') {
                     // Tipo data ISO 8601
                     $value = date('Y-m-d', strtotime($rawValue));

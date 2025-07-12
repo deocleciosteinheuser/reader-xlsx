@@ -4,7 +4,7 @@
         {
             "label": "Rodar servidor PHP",
             "type": "shell",
-            "command": "php -S localhost:8000 -t public",
+            "command": "php -d memory_limit=2048M -S localhost:8000 -t public ",
             "group": "build",
             "problemMatcher": []
         }
